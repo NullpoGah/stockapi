@@ -27,9 +27,9 @@ def read_stock(stock_id):
                 data = stock.history()
                 last_close_price = np.around((data.tail(1)['Close'].iloc[0]) + np.random.uniform(0,5), decimals=2)
             else:
-                return HTTPException(status_code=404, detail="Item not found")
+                raise HTTPException(status_code=404, detail="Item not found")
         except IndexError:
-            return HTTPException(status_code=404, detail="Item not found")
+            raise HTTPException(status_code=404, detail="Item not found")
     time = datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()
     # TODO: rename stock_id key to the Title
-    return{"stock_id": stock_id, "Price": last_close_price, "Time": time}
+    return{"stock_id": stock_id.upper(), "Price": last_close_price, "Time": time}
